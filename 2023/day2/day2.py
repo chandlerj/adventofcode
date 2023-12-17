@@ -24,7 +24,7 @@ def sum_valid_games(data: str, red_tol: int, grn_tol: int, blu_tol:int) -> int:
     for line in data.splitlines():
        game_split = line.split(':')
        curr_game = game_split[0].split(' ')[1] 
-       print(curr_game)
+#       print(curr_game)
        if determine_valid_game(line, red_tol, grn_tol, blu_tol):
             total += int(curr_game)
     return total
@@ -39,7 +39,7 @@ def determine_valid_game(line: str, red_tol: int, grn_tol: int, blu_tol: int) ->
         blue = blu_tol
         green = grn_tol
         gem_split = round.strip().replace(',','').split(' ')
-        print(gem_split)
+#        print(gem_split)
         for i in range(0, len(gem_split), 2):
             if gem_split[i + 1] == 'blue':
                 blue -= int(gem_split[i])
@@ -48,9 +48,36 @@ def determine_valid_game(line: str, red_tol: int, grn_tol: int, blu_tol: int) ->
             if gem_split[i + 1] == 'red':
                 red -= int(gem_split[i])
         if red < 0 or blue < 0 or green < 0:
-            print(f"impossible game: {curr_game}")
+#            print(f"impossible game: {curr_game}")
             return False
     return True
 
+def sum_gem_power(data: str):
+    total = 0
+    for line in data.splitlines():
+        red_min = 1
+        grn_min = 1
+        blu_min = 1
+
+        games = line.replace(',','').split(':')[1].split(';')
+        for i in range(len(games)):
+            games[i] = games[i].lstrip().split(' ')
+        for play in games:
+            for i in range(0, len(play), 2):
+                if play[i + 1] == 'blue' and int(play[i]) > blu_min:
+                    blu_min = int(play[i])
+                if play[i + 1] == 'green' and int(play[i]) > grn_min:
+                    grn_min = int(play[i])
+                if play[i + 1] == 'red' and int(play[i]) > red_min:
+                    red_min = int(play[i])
+        game_power = red_min * grn_min * blu_min
+        total += game_power
+#        print(f"power: {game_power}; {games}")
+    return total
+
+
+
+
 data = read_data('/home/chandler/Documents/adventofcode/2023/day2/data.txt')
-print(sum_valid_games(data, 12, 13, 14))
+print(f'valid game sum: {sum_valid_games(data, 12, 13, 14)}')
+print(f'gem power sum:  {sum_gem_power(data)}')
