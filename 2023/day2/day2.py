@@ -12,14 +12,6 @@ def read_data(file_path: str):
     return data
 
 def sum_valid_games(data: str, red_tol: int, grn_tol: int, blu_tol:int) -> int:
-    """
-    Read in data one line at a time. One line corresponds to one
-    game being played. For every game, split the input by semicolon to
-    get each round that occurred in a game. From there, subtract the
-    amount of gems shown from the amount of gems allowed. if the 
-    jewel counts are not zero by the end of the game, then return
-    true; else, more gems were presented than the tolerated amount.
-    """
     total = 0
     for line in data.splitlines():
        game_split = line.split(':')
@@ -31,6 +23,15 @@ def sum_valid_games(data: str, red_tol: int, grn_tol: int, blu_tol:int) -> int:
 
 
 def determine_valid_game(line: str, red_tol: int, grn_tol: int, blu_tol: int) -> bool:
+    """
+    Read in data one line at a time. One line corresponds to one
+    game being played. For every game, split the input by semicolon to
+    get each round that occurred in a game. From there, subtract the
+    amount of gems shown from the amount of gems allowed. if the 
+    jewel counts are not zero by the end of the game, then return
+    true; else, more gems were presented than the tolerated amount.
+    """
+
     game_split = line.split(':')
     round_split = game_split[1].split(';')
     curr_game = game_split[0].split(' ')[1] 
